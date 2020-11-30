@@ -1,0 +1,366 @@
+---
+title: "Data Science Notebook"
+output:
+  html_document:
+    df_print: paged
+  pdf_document: default
+---
+
+# R Programming
+
+## Loop Functions
+
+
+- lapply: Loop over a **list** and evaluate a function on each element
+
+- sapply: Same as lapply but try simplify the result
+
+- apply: Apply a function over the margins of an array
+
+- tapply(table apply): Apply a function over subsets of a vector
+
+- mapply: Multivariate version of apply
+
+### lapply
+
+lapply **always** return a list, regardless of the class of the input
+
+```{r}
+x <- list(a = 1:4, b = rnorm(10), c = rnorm(20, 1), d = rnorm(100, 5))
+lapply(x, mean)
+```
+```{r}
+x <- 1:4
+lapply(x, runif) # runif:生成给定个数的随机数
+```
+```{r}
+x <- 1:4
+lapply(x, runif, min = 0, max = 10) # 设定最小值和最大值
+```
+
+lapply and friends make heavy use of *anonymous* functions.
+
+```{r}
+x <- list(a = matrix(data = 1:4, nrow = 2, ncol = 2), b = matrix(1:6, 3, 2))
+lapply(x, function(elt) elt[,1])
+```
+
+### sapply
+
+sapply will to simplify the result of lapply if possible
+
+- If the result is a list where every element is length 1, then a vector is returned.
+
+- If the result is a list where every element is a vecotr of the same length (>1), a matrix is returned.
+
+- If it can't figure things out,a list is returned.
+
+
+```{r}
+x <- list(a = 1:4, b = rnorm(10), c = rnorm(20,1), d = rnorm(100,5))
+sapply(x, mean)
+```
+
+### apply
+
+apply is userd to a evaluate function (often an anoymous one) over the margins of an array
+
+- It is most often used to apply a function to the rows or columns of a matrix
+
+- It can be used with general arrays, e.g. taking the average of an array of matrices
+
+- It is not really faster than writing a loop, but it works in one line!
+
+
+```{r}
+str(apply)
+```
+
+- X is an array
+
+- **MARGIN** is an integer vector indicating which margins should be "retained"
+
+- **FUN** is a function to be applied
+
+- ... is for other auguments to be passed to FUN
+
+
+```{r}
+x <- matrix(rnorm(200), 20, 10)
+
+# 2 means the second dimension
+apply(x, 2, mean) # calculate the mean of each columns of the matrix
+```
+
+```{r}
+apply(x, 1, sum) # the sum of each rows of the matrix
+```
+#### col/row sums and means
+
+For sums and means of matrix dimensions, we have some shortcuts.
+
+- rowSums = apply(x, 1, sum)
+
+- rowMeans = apply(x, 1, mean)
+
+- colSums = apply(x, 2, sum)
+
+- colMeans = apply(x, 2, mean)
+
+The shortcut function are *much* faster, but you won't notice unless you're using a large matrix.
+
+#### Other ways to Apply
+
+Quantiles of the rows of a matrix
+
+```{r}
+x <- matrix(rnorm(200), 20, 10)
+apply(x, 1, quantile, probs = c(0.25, 0.75))
+```
+
+Average matrix in an array
+
+```{r}
+a <- array(rnorm(2 * 2 * 10), c(2, 2, 10))
+apply(a, c(1,2), mean)
+```
+
+
+```{r}
+rowMeans(a, dim = 2)
+```
+
+
+### mapply
+
+**mapply** is a multivariate apply of sorts which applies a function in parallel over a set of arguments.
+
+```{r}
+str(mapply)
+```
+- **FUN** is a function to apply
+- ... contains arguments to apply over
+- **MoreArgs** is a list of other arguments to **FUN**
+- **SIMPLIFY** indicates wheather the result should be simplified  
+
+The following is tedious to type
+
+```{r}
+list(rep(1, 4), rep(2, 3), rep(3, 2), rep(4, 1))
+```
+
+Instead we can do
+
+```{r}
+mapply(rep, 1:4, 4:1)
+```
+
+#### Vectorizing a Function
+
+```{r}
+noise <- function(n, mean, sd) {
+    rnorm(n, mean, sd)
+}
+```
+
+```{r}
+noise(5, 1, 2)
+```
+
+```{r}
+noise(1:5, 1:5, 2)
+```
+显然以上不是我们想要的结果
+
+#### Instant Vectorization
+
+```{r}
+mapply(noise, 1:5, 1:5, 2)
+```
+
+```{r}
+?factor
+```
+
+
+### tapply
+
+**tapply** is used to apply a function over subsets of a vector.  
+
+(Don't know why it's called **tapply*.)
+
+```{r}
+str(apply)
+```
+- **X** is a vector
+- **INDEX** is a factor or a list of factors (or else they are coerced to factor)
+- **FUN** is a fucntion to be applied
+- .. contains other arguments to be passed **FUN**
+- **simplify**, should we simplify the result?
+
+Take group means.
+
+```{r}
+x <- c(rnorm(10), runif(10), rnorm(10, 1))
+f <- gl(3, 10)
+f
+```
+```{r}
+tapply(x, f, mean)
+```
+
+Take group means without simplification.
+
+```{r}
+tapply(x, f, mean, simplify = FALSE)
+```
+
+Find group ranges.
+
+```{r}
+tapply(x, f, range) # gives the min and the max of the observations within the subsets of the vector x
+``` 
+
+### split
+
+split takes a vector or other objects and split it into groups determined by a factor or list of factors.
+
+split is not a loop function but it is a very handy function that can be used in conjuction with functions like lapply.
+
+```{r}
+str(split)
+```
+
+- **x** is a vector (or list) or data frame
+- **f** is a factor (or coerced to one) or a list of factor
+- **drop** indicates whether empty factors levels should be dropped
+
+```{r}
+x <- c(rnorm(10), runif(10), rnorm(10, 1))
+f <- gl(3, 10)
+split(x, f)
+```
+
+```{r}
+lapply(split(x, f), mean)
+```
+
+
+```{r}
+tapply(x, f, mean)
+```
+#### Splitting a Data Frame
+
+```{r}
+library(datasets)
+head(airquality)
+```
+
+```{r}
+s <- split(airquality, airquality$Month)
+lapply(s, function(x) colMeans(x[, c("Ozone", "Solar.R", "Wind")]))
+```
+
+```{r}
+sapply(s, function(x) colMeans(x[, c("Ozone", "Solar.R", "Wind")]))
+```
+
+```{r}
+sapply(s, function(x) colMeans(x[, c("Ozone", "Solar.R", "Wind")], na.rm = TRUE))
+```
+
+#### Splitting on More than One Level
+
+```{r}
+x <- rnorm(10)
+f1 <- gl(2, 5)
+f2 <- gl(5, 2)
+f1
+```
+```{r}
+f2
+```
+
+```{r}
+interaction(f1, f2)
+```
+
+
+```{r}
+interaction(f1, f2) # 十个factor一一对应左右对应组合起来的结果
+```
+
+Interactions can create empty levels.
+
+```{r}
+str(split(x, list(f1, f2)))
+```
+
+Empty levels can be dropped.
+
+```{r}
+str(split(x, list(f1, f2), drop = TRUE))
+```
+```{r}
+list(f1, f2)
+```
+
+### Debugging Tools in R
+
+The primary tools for debugging functions in R are
+
+- **traceback**: prints out the function call stack after an error occurs; does nothing if there's no error
+- **debug**: flags a function for "debug" mode which allows you to step through execution of a function one line at a time
+- **browser**: suspends the execution of a function wherever it is called and puts the function in debug mode
+- **trace**: allows you to insert debugging code into a function a specific places
+- **recover**: allows you to modify the error behavior so that you can browse the function call stack
+
+
+#### trackback
+
+当发生错误时，traceback打印出错函数的函数调用栈
+
+```{r}
+# mean(z)
+```
+```{r}
+traceback()
+```
+
+```{r}
+# lm(y - x)
+```
+
+```{r}
+traceback()
+```
+
+#### debug
+
+```{r}
+debug(lm)
+```
+
+```{r}
+# lm(z - y)
+```
+
+此时调用lm函数，会先打印出整个函数的代码，然后进入browse模式，可以一行一行的执行代码，定位具体出错的位置。
+
+#### recover
+
+可以通过options()把recover函数设为错误处理器
+
+```{r}
+options(error = recover)
+```
+
+```{r}
+#read.csv("nosuchfile")
+```
+
+
+
+
+
+

@@ -1,0 +1,976 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  pdftitle={Data Science Notebook},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+
+\title{Data Science Notebook}
+\author{}
+\date{\vspace{-2.5em}}
+
+\begin{document}
+\maketitle
+
+\hypertarget{r-programming}{%
+\section{R Programming}\label{r-programming}}
+
+\hypertarget{loop-functions}{%
+\subsection{Loop Functions}\label{loop-functions}}
+
+\begin{itemize}
+\item
+  lapply: Loop over a \textbf{list} and evaluate a function on each
+  element
+\item
+  sapply: Same as lapply but try simplify the result
+\item
+  apply: Apply a function over the margins of an array
+\item
+  tapply(table apply): Apply a function over subsets of a vector
+\item
+  mapply: Multivariate version of apply
+\end{itemize}
+
+\hypertarget{lapply}{%
+\subsubsection{lapply}\label{lapply}}
+
+lapply \textbf{always} return a list, regardless of the class of the
+input
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{x \textless{}{-}}\StringTok{ }\KeywordTok{list}\NormalTok{(}\DataTypeTok{a =} \DecValTok{1}\OperatorTok{:}\DecValTok{4}\NormalTok{, }\DataTypeTok{b =} \KeywordTok{rnorm}\NormalTok{(}\DecValTok{10}\NormalTok{), }\DataTypeTok{c =} \KeywordTok{rnorm}\NormalTok{(}\DecValTok{20}\NormalTok{, }\DecValTok{1}\NormalTok{), }\DataTypeTok{d =} \KeywordTok{rnorm}\NormalTok{(}\DecValTok{100}\NormalTok{, }\DecValTok{5}\NormalTok{))}
+\KeywordTok{lapply}\NormalTok{(x, mean)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## $a
+## [1] 2.5
+## 
+## $b
+## [1] -0.1278185
+## 
+## $c
+## [1] 1.028772
+## 
+## $d
+## [1] 5.00698
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{x \textless{}{-}}\StringTok{ }\DecValTok{1}\OperatorTok{:}\DecValTok{4}
+\KeywordTok{lapply}\NormalTok{(x, runif) }\CommentTok{\# runif:生成给定个数的随机数}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [[1]]
+## [1] 0.2338
+## 
+## [[2]]
+## [1] 0.3822538 0.6187757
+## 
+## [[3]]
+## [1] 0.9436122 0.7727679 0.4335463
+## 
+## [[4]]
+## [1] 0.35048781 0.47884682 0.17664804 0.02274831
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{x \textless{}{-}}\StringTok{ }\DecValTok{1}\OperatorTok{:}\DecValTok{4}
+\KeywordTok{lapply}\NormalTok{(x, runif, }\DataTypeTok{min =} \DecValTok{0}\NormalTok{, }\DataTypeTok{max =} \DecValTok{10}\NormalTok{) }\CommentTok{\# 设定最小值和最大值}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [[1]]
+## [1] 4.000257
+## 
+## [[2]]
+## [1] 8.547951 6.009444
+## 
+## [[3]]
+## [1] 1.103804 1.404902 1.329846
+## 
+## [[4]]
+## [1] 0.3525163 7.9086601 2.4990813 1.6199491
+\end{verbatim}
+
+lapply and friends make heavy use of \emph{anonymous} functions.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{x \textless{}{-}}\StringTok{ }\KeywordTok{list}\NormalTok{(}\DataTypeTok{a =} \KeywordTok{matrix}\NormalTok{(}\DataTypeTok{data =} \DecValTok{1}\OperatorTok{:}\DecValTok{4}\NormalTok{, }\DataTypeTok{nrow =} \DecValTok{2}\NormalTok{, }\DataTypeTok{ncol =} \DecValTok{2}\NormalTok{), }\DataTypeTok{b =} \KeywordTok{matrix}\NormalTok{(}\DecValTok{1}\OperatorTok{:}\DecValTok{6}\NormalTok{, }\DecValTok{3}\NormalTok{, }\DecValTok{2}\NormalTok{))}
+\KeywordTok{lapply}\NormalTok{(x, }\ControlFlowTok{function}\NormalTok{(elt) elt[,}\DecValTok{1}\NormalTok{])}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## $a
+## [1] 1 2
+## 
+## $b
+## [1] 1 2 3
+\end{verbatim}
+
+\hypertarget{sapply}{%
+\subsubsection{sapply}\label{sapply}}
+
+sapply will to simplify the result of lapply if possible
+
+\begin{itemize}
+\item
+  If the result is a list where every element is length 1, then a vector
+  is returned.
+\item
+  If the result is a list where every element is a vecotr of the same
+  length (\textgreater1), a matrix is returned.
+\item
+  If it can't figure things out,a list is returned.
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{x \textless{}{-}}\StringTok{ }\KeywordTok{list}\NormalTok{(}\DataTypeTok{a =} \DecValTok{1}\OperatorTok{:}\DecValTok{4}\NormalTok{, }\DataTypeTok{b =} \KeywordTok{rnorm}\NormalTok{(}\DecValTok{10}\NormalTok{), }\DataTypeTok{c =} \KeywordTok{rnorm}\NormalTok{(}\DecValTok{20}\NormalTok{,}\DecValTok{1}\NormalTok{), }\DataTypeTok{d =} \KeywordTok{rnorm}\NormalTok{(}\DecValTok{100}\NormalTok{,}\DecValTok{5}\NormalTok{))}
+\KeywordTok{sapply}\NormalTok{(x, mean)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##          a          b          c          d 
+## 2.50000000 0.02184388 1.05973645 5.06423436
+\end{verbatim}
+
+\hypertarget{apply}{%
+\subsubsection{apply}\label{apply}}
+
+apply is userd to a evaluate function (often an anoymous one) over the
+margins of an array
+
+\begin{itemize}
+\item
+  It is most often used to apply a function to the rows or columns of a
+  matrix
+\item
+  It can be used with general arrays, e.g.~taking the average of an
+  array of matrices
+\item
+  It is not really faster than writing a loop, but it works in one line!
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{str}\NormalTok{(apply)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## function (X, MARGIN, FUN, ...)
+\end{verbatim}
+
+\begin{itemize}
+\item
+  X is an array
+\item
+  \textbf{MARGIN} is an integer vector indicating which margins should
+  be ``retained''
+\item
+  \textbf{FUN} is a function to be applied
+\item
+  \ldots{} is for other auguments to be passed to FUN
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{x \textless{}{-}}\StringTok{ }\KeywordTok{matrix}\NormalTok{(}\KeywordTok{rnorm}\NormalTok{(}\DecValTok{200}\NormalTok{), }\DecValTok{20}\NormalTok{, }\DecValTok{10}\NormalTok{)}
+
+\CommentTok{\# 2 means the second dimension}
+\KeywordTok{apply}\NormalTok{(x, }\DecValTok{2}\NormalTok{, mean) }\CommentTok{\# calculate the mean of each columns of the matrix}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##  [1]  0.112345792  0.258649726 -0.049758164 -0.227022900  0.026803401
+##  [6] -0.001736036  0.015822215  0.106649477  0.088589313 -0.086457545
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{apply}\NormalTok{(x, }\DecValTok{1}\NormalTok{, sum) }\CommentTok{\# the sum of each rows of the matrix}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##  [1] -1.31816180  2.98064704  3.05921487 -2.03404282  1.12849560  0.33589588
+##  [7] -2.91688654 -3.16319513  3.73967981  0.46405728  0.26845214  1.91650232
+## [13] -3.77992861 -2.42457961 -1.22057013  3.50428218 -0.08944995  3.07767107
+## [19] -1.70153601  3.05115802
+\end{verbatim}
+
+\hypertarget{colrow-sums-and-means}{%
+\paragraph{col/row sums and means}\label{colrow-sums-and-means}}
+
+For sums and means of matrix dimensions, we have some shortcuts.
+
+\begin{itemize}
+\item
+  rowSums = apply(x, 1, sum)
+\item
+  rowMeans = apply(x, 1, mean)
+\item
+  colSums = apply(x, 2, sum)
+\item
+  colMeans = apply(x, 2, mean)
+\end{itemize}
+
+The shortcut function are \emph{much} faster, but you won't notice
+unless you're using a large matrix.
+
+\hypertarget{other-ways-to-apply}{%
+\paragraph{Other ways to Apply}\label{other-ways-to-apply}}
+
+Quantiles of the rows of a matrix
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{x \textless{}{-}}\StringTok{ }\KeywordTok{matrix}\NormalTok{(}\KeywordTok{rnorm}\NormalTok{(}\DecValTok{200}\NormalTok{), }\DecValTok{20}\NormalTok{, }\DecValTok{10}\NormalTok{)}
+\KeywordTok{apply}\NormalTok{(x, }\DecValTok{1}\NormalTok{, quantile, }\DataTypeTok{probs =} \KeywordTok{c}\NormalTok{(}\FloatTok{0.25}\NormalTok{, }\FloatTok{0.75}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##          [,1]       [,2]       [,3]       [,4]       [,5]       [,6]       [,7]
+## 25% -1.269043 -1.0292604 -0.1698844 -0.2612843 -1.1260270 -0.3123889 -0.7465558
+## 75%  1.274919  0.6802779  1.0588464  0.4415585  0.9484556  0.5304493  0.5017373
+##           [,8]       [,9]       [,10]      [,11]       [,12]      [,13]
+## 25% -0.8509583 -0.4208479 -1.65354904 -0.3415534 -0.80634711 -0.4706884
+## 75%  0.2823195  0.6478099 -0.02789911  0.4598912  0.08947282  0.8809988
+##          [,14]      [,15]      [,16]      [,17]      [,18]        [,19]
+## 25% -0.5284515 -0.8767446 -0.6221841 -0.8895972 -0.4368462 -1.525009953
+## 75%  0.5616398  0.2314100  1.3038625  0.4518838  0.8541767  0.008835564
+##          [,20]
+## 25% -0.7965885
+## 75%  0.4413160
+\end{verbatim}
+
+Average matrix in an array
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{a \textless{}{-}}\StringTok{ }\KeywordTok{array}\NormalTok{(}\KeywordTok{rnorm}\NormalTok{(}\DecValTok{2} \OperatorTok{*}\StringTok{ }\DecValTok{2} \OperatorTok{*}\StringTok{ }\DecValTok{10}\NormalTok{), }\KeywordTok{c}\NormalTok{(}\DecValTok{2}\NormalTok{, }\DecValTok{2}\NormalTok{, }\DecValTok{10}\NormalTok{))}
+\KeywordTok{apply}\NormalTok{(a, }\KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{2}\NormalTok{), mean)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##            [,1]        [,2]
+## [1,]  0.6164147  0.04601830
+## [2,] -0.1932988 -0.04778363
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{rowMeans}\NormalTok{(a, }\DataTypeTok{dim =} \DecValTok{2}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##            [,1]        [,2]
+## [1,]  0.6164147  0.04601830
+## [2,] -0.1932988 -0.04778363
+\end{verbatim}
+
+\hypertarget{mapply}{%
+\subsubsection{mapply}\label{mapply}}
+
+\textbf{mapply} is a multivariate apply of sorts which applies a
+function in parallel over a set of arguments.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{str}\NormalTok{(mapply)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## function (FUN, ..., MoreArgs = NULL, SIMPLIFY = TRUE, USE.NAMES = TRUE)
+\end{verbatim}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{FUN} is a function to apply
+\item
+  \ldots{} contains arguments to apply over
+\item
+  \textbf{MoreArgs} is a list of other arguments to \textbf{FUN}
+\item
+  \textbf{SIMPLIFY} indicates wheather the result should be simplified
+\end{itemize}
+
+The following is tedious to type
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{list}\NormalTok{(}\KeywordTok{rep}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{4}\NormalTok{), }\KeywordTok{rep}\NormalTok{(}\DecValTok{2}\NormalTok{, }\DecValTok{3}\NormalTok{), }\KeywordTok{rep}\NormalTok{(}\DecValTok{3}\NormalTok{, }\DecValTok{2}\NormalTok{), }\KeywordTok{rep}\NormalTok{(}\DecValTok{4}\NormalTok{, }\DecValTok{1}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [[1]]
+## [1] 1 1 1 1
+## 
+## [[2]]
+## [1] 2 2 2
+## 
+## [[3]]
+## [1] 3 3
+## 
+## [[4]]
+## [1] 4
+\end{verbatim}
+
+Instead we can do
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{mapply}\NormalTok{(rep, }\DecValTok{1}\OperatorTok{:}\DecValTok{4}\NormalTok{, }\DecValTok{4}\OperatorTok{:}\DecValTok{1}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [[1]]
+## [1] 1 1 1 1
+## 
+## [[2]]
+## [1] 2 2 2
+## 
+## [[3]]
+## [1] 3 3
+## 
+## [[4]]
+## [1] 4
+\end{verbatim}
+
+\hypertarget{vectorizing-a-function}{%
+\paragraph{Vectorizing a Function}\label{vectorizing-a-function}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{noise \textless{}{-}}\StringTok{ }\ControlFlowTok{function}\NormalTok{(n, mean, sd) \{}
+    \KeywordTok{rnorm}\NormalTok{(n, mean, sd)}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{noise}\NormalTok{(}\DecValTok{5}\NormalTok{, }\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] -0.5603570  0.1085129  3.0723444 -0.6130173  1.6797173
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{noise}\NormalTok{(}\DecValTok{1}\OperatorTok{:}\DecValTok{5}\NormalTok{, }\DecValTok{1}\OperatorTok{:}\DecValTok{5}\NormalTok{, }\DecValTok{2}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 4.340264 3.648094 1.564776 1.075283 5.245968
+\end{verbatim}
+
+显然以上不是我们想要的结果
+
+\hypertarget{instant-vectorization}{%
+\paragraph{Instant Vectorization}\label{instant-vectorization}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{mapply}\NormalTok{(noise, }\DecValTok{1}\OperatorTok{:}\DecValTok{5}\NormalTok{, }\DecValTok{1}\OperatorTok{:}\DecValTok{5}\NormalTok{, }\DecValTok{2}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [[1]]
+## [1] 2.645621
+## 
+## [[2]]
+## [1] 0.08007882 2.34264517
+## 
+## [[3]]
+## [1]  4.0533284 -0.2985937  1.7688980
+## 
+## [[4]]
+## [1] 8.172823 5.934735 2.952229 4.173631
+## 
+## [[5]]
+## [1] 5.8707446 2.6804398 7.7860345 4.6545764 0.4561946
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{?factor}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## starting httpd help server ... done
+\end{verbatim}
+
+\hypertarget{tapply}{%
+\subsubsection{tapply}\label{tapply}}
+
+\textbf{tapply} is used to apply a function over subsets of a vector.
+
+(Don't know why it's called **tapply*.)
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{str}\NormalTok{(apply)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## function (X, MARGIN, FUN, ...)
+\end{verbatim}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{X} is a vector
+\item
+  \textbf{INDEX} is a factor or a list of factors (or else they are
+  coerced to factor)
+\item
+  \textbf{FUN} is a fucntion to be applied
+\item
+  .. contains other arguments to be passed \textbf{FUN}
+\item
+  \textbf{simplify}, should we simplify the result?
+\end{itemize}
+
+Take group means.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{x \textless{}{-}}\StringTok{ }\KeywordTok{c}\NormalTok{(}\KeywordTok{rnorm}\NormalTok{(}\DecValTok{10}\NormalTok{), }\KeywordTok{runif}\NormalTok{(}\DecValTok{10}\NormalTok{), }\KeywordTok{rnorm}\NormalTok{(}\DecValTok{10}\NormalTok{, }\DecValTok{1}\NormalTok{))}
+\NormalTok{f \textless{}{-}}\StringTok{ }\KeywordTok{gl}\NormalTok{(}\DecValTok{3}\NormalTok{, }\DecValTok{10}\NormalTok{)}
+\NormalTok{f}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##  [1] 1 1 1 1 1 1 1 1 1 1 2 2 2 2 2 2 2 2 2 2 3 3 3 3 3 3 3 3 3 3
+## Levels: 1 2 3
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{tapply}\NormalTok{(x, f, mean)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##         1         2         3 
+## 0.4228764 0.3981082 1.2009519
+\end{verbatim}
+
+Take group means without simplification.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{tapply}\NormalTok{(x, f, mean, }\DataTypeTok{simplify =} \OtherTok{FALSE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## $`1`
+## [1] 0.4228764
+## 
+## $`2`
+## [1] 0.3981082
+## 
+## $`3`
+## [1] 1.200952
+\end{verbatim}
+
+Find group ranges.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{tapply}\NormalTok{(x, f, range) }\CommentTok{\# gives the min and the max of the observations within the subsets of the vector x}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## $`1`
+## [1] -2.223016  3.185123
+## 
+## $`2`
+## [1] 0.04237351 0.95993802
+## 
+## $`3`
+## [1] -0.5526404  2.2998786
+\end{verbatim}
+
+\hypertarget{split}{%
+\subsubsection{split}\label{split}}
+
+split takes a vector or other objects and split it into groups
+determined by a factor or list of factors.
+
+split is not a loop function but it is a very handy function that can be
+used in conjuction with functions like lapply.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{str}\NormalTok{(split)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## function (x, f, drop = FALSE, ...)
+\end{verbatim}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{x} is a vector (or list) or data frame
+\item
+  \textbf{f} is a factor (or coerced to one) or a list of factor
+\item
+  \textbf{drop} indicates whether empty factors levels should be dropped
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{x \textless{}{-}}\StringTok{ }\KeywordTok{c}\NormalTok{(}\KeywordTok{rnorm}\NormalTok{(}\DecValTok{10}\NormalTok{), }\KeywordTok{runif}\NormalTok{(}\DecValTok{10}\NormalTok{), }\KeywordTok{rnorm}\NormalTok{(}\DecValTok{10}\NormalTok{, }\DecValTok{1}\NormalTok{))}
+\NormalTok{f \textless{}{-}}\StringTok{ }\KeywordTok{gl}\NormalTok{(}\DecValTok{3}\NormalTok{, }\DecValTok{10}\NormalTok{)}
+\KeywordTok{split}\NormalTok{(x, f)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## $`1`
+##  [1] -1.70561930  0.95897395  1.06864208  0.60754809 -0.93774493  0.70752373
+##  [7]  0.33097228  0.83777992  0.19176928 -0.01519066
+## 
+## $`2`
+##  [1] 0.5021744 0.2208294 0.9559347 0.9026626 0.4919914 0.2159218 0.8203364
+##  [8] 0.3918720 0.8471233 0.1260708
+## 
+## $`3`
+##  [1]  0.1766738  1.7399116 -0.3286700  1.1139291  1.3632336  2.6966651
+##  [7]  1.7888473  0.9690902  0.4650057  1.8579001
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{lapply}\NormalTok{(}\KeywordTok{split}\NormalTok{(x, f), mean)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## $`1`
+## [1] 0.2044654
+## 
+## $`2`
+## [1] 0.5474917
+## 
+## $`3`
+## [1] 1.184259
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{tapply}\NormalTok{(x, f, mean)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##         1         2         3 
+## 0.2044654 0.5474917 1.1842587
+\end{verbatim}
+
+\hypertarget{splitting-a-data-frame}{%
+\paragraph{Splitting a Data Frame}\label{splitting-a-data-frame}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(datasets)}
+\KeywordTok{head}\NormalTok{(airquality)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   Ozone Solar.R Wind Temp Month Day
+## 1    41     190  7.4   67     5   1
+## 2    36     118  8.0   72     5   2
+## 3    12     149 12.6   74     5   3
+## 4    18     313 11.5   62     5   4
+## 5    NA      NA 14.3   56     5   5
+## 6    28      NA 14.9   66     5   6
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{s \textless{}{-}}\StringTok{ }\KeywordTok{split}\NormalTok{(airquality, airquality}\OperatorTok{$}\NormalTok{Month)}
+\KeywordTok{lapply}\NormalTok{(s, }\ControlFlowTok{function}\NormalTok{(x) }\KeywordTok{colMeans}\NormalTok{(x[, }\KeywordTok{c}\NormalTok{(}\StringTok{"Ozone"}\NormalTok{, }\StringTok{"Solar.R"}\NormalTok{, }\StringTok{"Wind"}\NormalTok{)]))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## $`5`
+##    Ozone  Solar.R     Wind 
+##       NA       NA 11.62258 
+## 
+## $`6`
+##     Ozone   Solar.R      Wind 
+##        NA 190.16667  10.26667 
+## 
+## $`7`
+##      Ozone    Solar.R       Wind 
+##         NA 216.483871   8.941935 
+## 
+## $`8`
+##    Ozone  Solar.R     Wind 
+##       NA       NA 8.793548 
+## 
+## $`9`
+##    Ozone  Solar.R     Wind 
+##       NA 167.4333  10.1800
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{sapply}\NormalTok{(s, }\ControlFlowTok{function}\NormalTok{(x) }\KeywordTok{colMeans}\NormalTok{(x[, }\KeywordTok{c}\NormalTok{(}\StringTok{"Ozone"}\NormalTok{, }\StringTok{"Solar.R"}\NormalTok{, }\StringTok{"Wind"}\NormalTok{)]))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##                5         6          7        8        9
+## Ozone         NA        NA         NA       NA       NA
+## Solar.R       NA 190.16667 216.483871       NA 167.4333
+## Wind    11.62258  10.26667   8.941935 8.793548  10.1800
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{sapply}\NormalTok{(s, }\ControlFlowTok{function}\NormalTok{(x) }\KeywordTok{colMeans}\NormalTok{(x[, }\KeywordTok{c}\NormalTok{(}\StringTok{"Ozone"}\NormalTok{, }\StringTok{"Solar.R"}\NormalTok{, }\StringTok{"Wind"}\NormalTok{)], }\DataTypeTok{na.rm =} \OtherTok{TRUE}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##                 5         6          7          8         9
+## Ozone    23.61538  29.44444  59.115385  59.961538  31.44828
+## Solar.R 181.29630 190.16667 216.483871 171.857143 167.43333
+## Wind     11.62258  10.26667   8.941935   8.793548  10.18000
+\end{verbatim}
+
+\hypertarget{splitting-on-more-than-one-level}{%
+\paragraph{Splitting on More than One
+Level}\label{splitting-on-more-than-one-level}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{x \textless{}{-}}\StringTok{ }\KeywordTok{rnorm}\NormalTok{(}\DecValTok{10}\NormalTok{)}
+\NormalTok{f1 \textless{}{-}}\StringTok{ }\KeywordTok{gl}\NormalTok{(}\DecValTok{2}\NormalTok{, }\DecValTok{5}\NormalTok{)}
+\NormalTok{f2 \textless{}{-}}\StringTok{ }\KeywordTok{gl}\NormalTok{(}\DecValTok{5}\NormalTok{, }\DecValTok{2}\NormalTok{)}
+\NormalTok{f1}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##  [1] 1 1 1 1 1 2 2 2 2 2
+## Levels: 1 2
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{f2}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##  [1] 1 1 2 2 3 3 4 4 5 5
+## Levels: 1 2 3 4 5
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{interaction}\NormalTok{(f1, f2)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##  [1] 1.1 1.1 1.2 1.2 1.3 2.3 2.4 2.4 2.5 2.5
+## Levels: 1.1 2.1 1.2 2.2 1.3 2.3 1.4 2.4 1.5 2.5
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{interaction}\NormalTok{(f1, f2) }\CommentTok{\# 十个factor一一对应左右对应组合起来的结果}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##  [1] 1.1 1.1 1.2 1.2 1.3 2.3 2.4 2.4 2.5 2.5
+## Levels: 1.1 2.1 1.2 2.2 1.3 2.3 1.4 2.4 1.5 2.5
+\end{verbatim}
+
+Interactions can create empty levels.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{str}\NormalTok{(}\KeywordTok{split}\NormalTok{(x, }\KeywordTok{list}\NormalTok{(f1, f2)))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## List of 10
+##  $ 1.1: num [1:2] -1.25 -1.64
+##  $ 2.1: num(0) 
+##  $ 1.2: num [1:2] -0.102 -2.855
+##  $ 2.2: num(0) 
+##  $ 1.3: num 0.081
+##  $ 2.3: num -1.69
+##  $ 1.4: num(0) 
+##  $ 2.4: num [1:2] 1.93 -0.0708
+##  $ 1.5: num(0) 
+##  $ 2.5: num [1:2] -1.552 -0.989
+\end{verbatim}
+
+Empty levels can be dropped.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{str}\NormalTok{(}\KeywordTok{split}\NormalTok{(x, }\KeywordTok{list}\NormalTok{(f1, f2), }\DataTypeTok{drop =} \OtherTok{TRUE}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## List of 6
+##  $ 1.1: num [1:2] -1.25 -1.64
+##  $ 1.2: num [1:2] -0.102 -2.855
+##  $ 1.3: num 0.081
+##  $ 2.3: num -1.69
+##  $ 2.4: num [1:2] 1.93 -0.0708
+##  $ 2.5: num [1:2] -1.552 -0.989
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{list}\NormalTok{(f1, f2)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [[1]]
+##  [1] 1 1 1 1 1 2 2 2 2 2
+## Levels: 1 2
+## 
+## [[2]]
+##  [1] 1 1 2 2 3 3 4 4 5 5
+## Levels: 1 2 3 4 5
+\end{verbatim}
+
+\hypertarget{debugging-tools-in-r}{%
+\subsubsection{Debugging Tools in R}\label{debugging-tools-in-r}}
+
+The primary tools for debugging functions in R are
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{traceback}: prints out the function call stack after an error
+  occurs; does nothing if there's no error
+\item
+  \textbf{debug}: flags a function for ``debug'' mode which allows you
+  to step through execution of a function one line at a time
+\item
+  \textbf{browser}: suspends the execution of a function wherever it is
+  called and puts the function in debug mode
+\item
+  \textbf{trace}: allows you to insert debugging code into a function a
+  specific places
+\item
+  \textbf{recover}: allows you to modify the error behavior so that you
+  can browse the function call stack
+\end{itemize}
+
+\hypertarget{trackback}{%
+\paragraph{trackback}\label{trackback}}
+
+当发生错误时，traceback打印出错函数的函数调用栈
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# mean(z)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{traceback}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## No traceback available
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# lm(y {-} x)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{traceback}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## No traceback available
+\end{verbatim}
+
+\hypertarget{debug}{%
+\paragraph{debug}\label{debug}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{debug}\NormalTok{(lm)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# lm(z {-} y)}
+\end{Highlighting}
+\end{Shaded}
+
+此时调用lm函数，会先打印出整个函数的代码，然后进入browse模式，可以一行一行的执行代码，定位具体出错的位置。
+
+\hypertarget{recover}{%
+\paragraph{recover}\label{recover}}
+
+可以通过options()把recover函数设为错误处理器
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{options}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## function (...) 
+## .Internal(options(...))
+## <bytecode: 0x0000000012f17fa0>
+## <environment: namespace:base>
+\end{verbatim}
+
+\end{document}
